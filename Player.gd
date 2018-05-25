@@ -21,6 +21,8 @@ var pTimer = 0
 var paused = false
 
 var hasAxe = false
+var treeDamage = 3
+var treeHealth = 3
 
 func _ready():
 	$WalkTimer.wait_time = 0.35
@@ -41,8 +43,22 @@ func _physics_process(delta):
 	if paused:
 		return
 	var mov = _updateInput() * 16
-	if canWalk && tileMap.get_cellv(tileMap.world_to_map(position + mov)) != -1:
-		move(mov)
+	var gro = tileMap.get_cellv(tileMap.world_to_map(position + mov))
+	var veg = vegMap.get_cellv(vegMap.world_to_map(position + mov))
+	if canWalk and gro != -1:
+		if veg == 0:
+			treeDamage -= 1
+			say("CHOP", 0.2)
+			if treeDamage <= 0:
+				vegMap.set_cellv(vegMap.world_to_map(position + mov), -1)
+				treeDamage = treeHealth
+				say("CHOP!", 1)
+			pass
+		else:
+			move(mov)
+		
+		canWalk = false
+		$WalkTimer.start()
 	if primary && vegMap.get_cellv(vegMap.world_to_map(position)) != -1: #IF STANDING ON A TREE
 		if hasAxe:
 			vegMap.set_cellv(vegMap.world_to_map(position), -1)
@@ -103,8 +119,6 @@ func _on_WalkTimer_timeout():
 
 func move(m):
 	move_and_collide(m)
-	canWalk = false
-	$WalkTimer.start()
 
 func fill(map, x0, y0, width, height):
 	for x in width:
