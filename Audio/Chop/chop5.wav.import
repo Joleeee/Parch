@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/chop5.wav-e98ecc619894b117ac88f159eb2234a5.sample"
+
+[deps]
+
+source_file="res://Audio/Chop/chop5.wav"
+source_md5="80b7765e28ccf541346cedde254615ad"
+
+dest_files=[ "res://.import/chop5.wav-e98ecc619894b117ac88f159eb2234a5.sample" ]
+dest_md5="90185852516d16daea4d004aa17262e5"
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

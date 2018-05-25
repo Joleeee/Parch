@@ -24,12 +24,18 @@ var hasAxe = false
 var treeDamage = 3
 var treeHealth = 3
 
+var chopSounds = []
 func _ready():
 	$WalkTimer.wait_time = 0.35
 	$WalkTimer.start()
 	tileMap = get_parent().get_child(0)
 	vegMap = get_parent().get_child(1)
 	iteMap = get_parent().get_child(3)
+	chopSounds = _loadFiles("res://Audio/Chop/")
+	print(chopSounds)
+	$ChopSound.stream = chopSounds[1]
+	$ChopSound.play()
+
 
 
 func _physics_process(delta):
@@ -49,6 +55,7 @@ func _physics_process(delta):
 		if veg == 0:
 			treeDamage -= 1
 			say("CHOP", 0.2)
+			_playChopSound()
 			if treeDamage <= 0:
 				vegMap.set_cellv(vegMap.world_to_map(position + mov), -1)
 				treeDamage = treeHealth
@@ -109,6 +116,11 @@ func say(text, time):
 	tTimer = time
 	$Label.text = str(text)
 
+func _playChopSound():
+	var rand = randi() % chopSounds.size()
+	$ChopSound.stream = chopSounds[rand]
+	$ChopSound.play()
+
 func pause(time):
 	pTimer = time
 	paused = true
@@ -124,3 +136,23 @@ func fill(map, x0, y0, width, height):
 	for x in width:
 		for y in height:
 			map.set_cell(x0+x, y0+y, 0)
+
+func _loadFiles(path):
+	var files = []
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin()
+
+	while true:
+		var file = dir.get_next()
+		if file == "":
+			break
+		elif !file.begins_with(".") and !file.ends_with(".import"):
+			var sound = load(path+file)
+			print(path+file)
+			files.append(sound)
+			print(sound)
+	
+	dir.list_dir_end()
+	
+	return files
