@@ -17,6 +17,8 @@ var vegMap
 var iteMap
 
 var tTimer = 0
+var pTimer = 0
+var paused = false
 
 var hasAxe = false
 
@@ -26,20 +28,28 @@ func _ready():
 	tileMap = get_parent().get_child(0)
 	vegMap = get_parent().get_child(1)
 	iteMap = get_parent().get_child(3)
-	pass
 
 
 func _physics_process(delta):
-	var mov = _updateInput() * 16
 	tTimer -= delta
+	pTimer -= delta
+	if pTimer <= 0:
+		paused = false
 	if tTimer <= 0:
 		$Label.text = ""
 	pickUpItems(position)
+	if paused:
+		return
+	var mov = _updateInput() * 16
 	if canWalk && tileMap.get_cellv(tileMap.world_to_map(position + mov)) != -1:
 		move(mov)
 	if primary && vegMap.get_cellv(vegMap.world_to_map(position)) != -1: #IF STANDING ON A TREE
 		if hasAxe:
 			vegMap.set_cellv(vegMap.world_to_map(position), -1)
+			say("NEATER!", 2)
+			pause(2)
+			fill(tileMap, -5, -5, 10, 10)
+			tileMap.update_bitmask_region(Vector2(-5,-5), Vector2(5,5))
 		else:
 			say("WOULD BE NICE IF I COULD PICK UP THIS TREE...", 0)
 			iteMap.set_cellv(Vector2(-3,-2), 0)
@@ -83,6 +93,10 @@ func say(text, time):
 	tTimer = time
 	$Label.text = str(text)
 
+func pause(time):
+	pTimer = time
+	paused = true
+
 func _on_WalkTimer_timeout():
 	canWalk = true
 	pass
@@ -92,3 +106,7 @@ func move(m):
 	canWalk = false
 	$WalkTimer.start()
 
+func fill(map, x0, y0, width, height):
+	for x in width:
+		for y in height:
+			map.set_cell(x0+x, y0+y, 0)
