@@ -9,8 +9,10 @@ var down
 var left
 var right
 var primary
+var secondary
 
 var canWalk = false
+onready var ItemHolder = get_parent().get_child(4)
 
 var tileMap
 var vegMap
@@ -21,10 +23,24 @@ var pTimer = 0
 var paused = false
 
 var hasAxe = false
+var hasTorch = false
+var hasChainsaw = false
+
 var treeDamage = 3
 var treeHealth = 3
 
 var chopSounds = []
+
+var sticks = 0
+var wood = 0
+var coal = 0
+var sawdust = 0
+
+var color0 = Color("ffffff")
+var color1 = Color("ebff00")
+
+var goal = 0
+
 func _ready():
 	$WalkTimer.wait_time = 0.35
 	$WalkTimer.start()
@@ -35,7 +51,7 @@ func _ready():
 	print(chopSounds)
 	$ChopSound.stream = chopSounds[1]
 	$ChopSound.play()
-
+#	Global.getRecipie(Global.ITEMS.STICK)
 
 
 func _physics_process(delta):
@@ -45,17 +61,46 @@ func _physics_process(delta):
 		paused = false
 	if tTimer <= 0:
 		$Label.text = ""
-	pickUpItems(position)
+#	pickUpItems(position)
 	if paused:
 		return
 	var mov = _updateInput() * 16
 	var gro = tileMap.get_cellv(tileMap.world_to_map(position + mov))
 	var veg = vegMap.get_cellv(vegMap.world_to_map(position + mov))
+	
+	if sticks >= 12 && !hasAxe && secondary:
+		sticks -= 12
+		hasAxe = true
+	
+	goal = 0
+	if hasAxe:
+		goal += 1
+	if hasTorch:
+		goal += 1
+	if hasChainsaw:
+		goal += 1
+	
+	var text = ""
+	match goal:
+		0:
+			text = "AXE: "+str(12 - sticks)+" STICKS"
+		1:
+			text = "TORCH: "+str(24 - wood)+" WOOD"
+		2:
+			text = "CHAINSAW: "+star(42 - coal)+" COAL"
+	$CraftText.text = text
+	
+#	print(primary)
+	if primary == true:
+		pickUpItems()
+	
 	if canWalk and gro != -1:
 		if veg == 0:
 			treeDamage -= 1
 			say("CHOP", 0.2)
 			_playChopSound()
+#			ItemHolder._spawnItem(position + mov, ItemHolder.Sprites.stick)
+			Global.spawnItem(position+mov, Global.ITEMS.STICK)
 			if treeDamage <= 0:
 				vegMap.set_cellv(vegMap.world_to_map(position + mov), -1)
 				treeDamage = treeHealth
@@ -77,16 +122,17 @@ func _physics_process(delta):
 			say("WOULD BE NICE IF I COULD PICK UP THIS TREE...", 0)
 			iteMap.set_cellv(Vector2(-3,-2), 0)
 
-func pickUpItems(position):
-	if primary:
-		var pos = iteMap.world_to_map(position)
-		var id = iteMap.get_cellv(pos)
-		match id:
-			0:
-				if !hasAxe:
-					say("NEAT!", 2)
-				hasAxe = true
-		iteMap.set_cellv(pos, -1)
+func pickUpItems():
+	var areas = $Area2D.get_overlapping_areas()
+	for x in areas.size():
+		print(areas[x].get_parent().name)
+		areas[x].get_parent().queue_free()
+		if sticks == 0:
+			pause(3)
+			say("YOU AQUIRED STICK!", 3, color1)
+		
+		sticks += 1
+#		print(areas[x].get_parent().name)
 
 func _updateInput():
 	var dir = Vector2(0,0)
@@ -95,6 +141,7 @@ func _updateInput():
 	left = false
 	right = false
 	primary = false
+	secondary = false
 	if Input.is_action_pressed("up"):
 		dir.y -= 1
 		up = true
@@ -109,12 +156,17 @@ func _updateInput():
 		right = true
 	if Input.is_action_pressed("primary"):
 		primary = true
+	if Input.is_action_pressed("secondary"):
+		secondary = true
 	return dir
 	pass
 
-func say(text, time):
+func say(text, time, color = null):
 	tTimer = time
 	$Label.text = str(text)
+	if color == null:
+		color = color0
+	$Label.add_color_override("font_color", color)
 
 func _playChopSound():
 	var rand = randi() % chopSounds.size()
@@ -149,9 +201,9 @@ func _loadFiles(path):
 			break
 		elif !file.begins_with(".") and !file.ends_with(".import"):
 			var sound = load(path+file)
-			print(path+file)
+#			print(path+file)
 			files.append(sound)
-			print(sound)
+#			print(sound)
 	
 	dir.list_dir_end()
 	

@@ -11,8 +11,9 @@ var treeCounter = 0
 
 func _ready():
 	OS.set_window_size(Vector2(96*4, 64*4))
-	
-	_fillMap()
+	Global.ItemHolder = find_node("ItemHolder")
+#	get_tree().set_auto_accept_quit(false)
+#	_fillMap()
 	randomize()
 
 	pass
