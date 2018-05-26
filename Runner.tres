@@ -1,0 +1,17 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=2]
+
+[ext_resource path="res://Sprites/Player/runner1.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/Player/runner2.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Player/runner3.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/Player/runner4.png" type="Texture" id=4]
+
+[resource]
+
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "Right",
+"speed": 10.5
+} ]
+_sections_unfolded = [ "Resource" ]
+

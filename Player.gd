@@ -41,6 +41,8 @@ var color1 = Color("ebff00")
 
 var goal = 0
 
+onready var acquiredSound = preload("res://acquired.wav")
+
 func _ready():
 	$WalkTimer.wait_time = 0.35
 	$WalkTimer.start()
@@ -59,6 +61,7 @@ func _physics_process(delta):
 	pTimer -= delta
 	if pTimer <= 0:
 		paused = false
+		$AnimatedSprite.playing = true
 	if tTimer <= 0:
 		$Label.text = ""
 #	pickUpItems(position)
@@ -83,7 +86,10 @@ func _physics_process(delta):
 	var text = ""
 	match goal:
 		0:
-			text = "AXE: "+str(12 - sticks)+" STICKS"
+			if sticks < 12:
+				text = "AXE: "+str(12 - sticks)+" STICKS"
+			else:
+				text = "PRESS C TO CRAFT AXE"
 		1:
 			text = "TORCH: "+str(24 - wood)+" WOOD"
 		2:
@@ -96,16 +102,7 @@ func _physics_process(delta):
 	
 	if canWalk and gro != -1:
 		if veg == 0:
-			treeDamage -= 1
-			say("CHOP", 0.2)
-			_playChopSound()
-#			ItemHolder._spawnItem(position + mov, ItemHolder.Sprites.stick)
-			Global.spawnItem(position+mov, Global.ITEMS.STICK)
-			if treeDamage <= 0:
-				vegMap.set_cellv(vegMap.world_to_map(position + mov), -1)
-				treeDamage = treeHealth
-				say("CHOP!", 1)
-			pass
+			chop(mov)
 		else:
 			move(mov)
 		
@@ -122,6 +119,16 @@ func _physics_process(delta):
 			say("WOULD BE NICE IF I COULD PICK UP THIS TREE...", 0)
 			iteMap.set_cellv(Vector2(-3,-2), 0)
 
+func chop(mov):
+	treeDamage -= 1
+	say("CHOP", 0.2)
+	_playChopSound()
+	Global.spawnItem(position+mov, Global.ITEMS.STICK)
+	if treeDamage <= 0:
+		vegMap.set_cellv(vegMap.world_to_map(position + mov), -1)
+		treeDamage = treeHealth
+		say("CHOP!", 1)
+
 func pickUpItems():
 	var areas = $Area2D.get_overlapping_areas()
 	for x in areas.size():
@@ -130,9 +137,10 @@ func pickUpItems():
 		if sticks == 0:
 			pause(3)
 			say("YOU AQUIRED STICK!", 3, color1)
+			$ChopSound.stream = acquiredSound
+			$ChopSound.play()
 		
 		sticks += 1
-#		print(areas[x].get_parent().name)
 
 func _updateInput():
 	var dir = Vector2(0,0)
@@ -175,6 +183,7 @@ func _playChopSound():
 
 func pause(time):
 	pTimer = time
+	$AnimatedSprite.playing = false
 	paused = true
 
 func _on_WalkTimer_timeout():

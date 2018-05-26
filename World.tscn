@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://World.gd" type="Script" id=1]
 [ext_resource path="res://Autotile.tres" type="TileSet" id=2]
@@ -6,8 +6,9 @@
 [ext_resource path="res://ItemTiles.tres" type="TileSet" id=4]
 [ext_resource path="res://ItemHolder.gd" type="Script" id=5]
 [ext_resource path="res://Player.gd" type="Script" id=6]
-[ext_resource path="res://Player.png" type="Texture" id=7]
+[ext_resource path="res://Runner.tres" type="SpriteFrames" id=7]
 [ext_resource path="res://PICO8.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Player.png" type="Texture" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -130,9 +131,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Sprite" type="Sprite" parent="Player" index="0"]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Player" index="0"]
 
-texture = ExtResource( 7 )
+frames = ExtResource( 7 )
+animation = "Right"
+frame = 1
+playing = true
 
 [node name="Camera2D" type="Camera2D" parent="Player" index="1"]
 
@@ -246,6 +250,11 @@ volume_db = 0.0
 autoplay = false
 mix_target = 0
 bus = "Master"
+
+[node name="Sprite" type="Sprite" parent="Player" index="8"]
+
+visible = false
+texture = ExtResource( 9 )
 
 [connection signal="timeout" from="Player/WalkTimer" to="Player" method="_on_WalkTimer_timeout"]
 
