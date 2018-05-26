@@ -52,7 +52,7 @@ custom_solver_bias = 1.0
 extents = Vector2( 10, 10 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="World" type="Node" index="0"]
+[node name="World" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -175,14 +175,14 @@ planks = 0
 
 frames = ExtResource( 7 )
 animation = "Right"
-frame = 2
+frame = 1
 playing = true
 
 [node name="Tool" type="AnimatedSprite" parent="Player/AnimatedSprite" index="0"]
 
 frames = SubResource( 2 )
 animation = "Axe"
-frame = 2
+frame = 1
 playing = true
 
 [node name="Camera2D" type="Camera2D" parent="Player" index="1"]
