@@ -60,8 +60,8 @@ func _ready():
 	iteMap = get_parent().get_child(3)
 	chopSounds = _loadFiles("res://Audio/Chop/")
 	print(chopSounds)
-	$ChopSound.stream = chopSounds[1]
-	$ChopSound.play()
+#	$ChopSound.stream = chopSounds[1]
+#	$ChopSound.play()
 	setFrame(0)
 	setWeapon("None")
 	setAnimation(false)
@@ -319,6 +319,7 @@ func fill(map, x0, y0, width, height):
 			map.set_cell(x0+x, y0+y, 0)
 
 func _loadFiles(path):
+	print("started loading")
 	var files = []
 	var dir = Directory.new()
 	dir.open(path)
@@ -326,13 +327,20 @@ func _loadFiles(path):
 
 	while true:
 		var file = dir.get_next()
+		print("file:"+file)
+		print("doesfilestartwith.?"+str(file.begins_with(".")))
+		print("doesfileendwith.import?"+str(file.ends_with(".import")))
+#		var a = file
 		if file == "":
 			break
-		elif !file.begins_with(".") and !file.ends_with(".import"):
-			var sound = load(path+file)
-#			print(path+file)
+		if file.ends_with(".wav.import"):
+			print("file is beeing accepted...")
+			var sound = load(path+file.replace(".import", ""))
+			print("file is accepted")
+			print(path+file)
 			files.append(sound)
-#			print(sound)
+			print(sound)
+#!file.begins_with(".") and !file.ends_with(".import"
 	
 	dir.list_dir_end()
 	
