@@ -1,10 +1,13 @@
 extends Node
 
-enum ITEMS {STICK, WOOD, STONE}
+enum ITEMS {STICK, WOOD, COAL, PLANKS}
 
 onready var itemScene = preload("res://Item.tscn")
 
 onready var stick = preload("res://Stick.png")
+onready var wood = preload("res://Sprites/log.png")
+onready var coal = preload("res://Sprites/Coal.png")
+onready var planks = preload("res://Sprites/Planks.png")
 
 var ItemHolder
 
@@ -26,6 +29,24 @@ func getItem(item):
 			s.name = "STICK"
 			s.type = ITEMS.STICK
 			s.get_child(0).texture = stick
+			return s
+		ITEMS.WOOD:
+			var s = itemScene.instance()
+			s.name = "WOOD"
+			s.type = ITEMS.WOOD
+			s.get_child(0).texture = wood
+			return s
+		ITEMS.COAL:
+			var s = itemScene.instance()
+			s.name = "COAL"
+			s.type = ITEMS.COAL
+			s.get_child(0).texture = coal
+			return s
+		ITEMS.PLANKS:
+			var s = itemScene.instance()
+			s.name = "PLANKS"
+			s.type = ITEMS.PLANKS
+			s.get_child(0).texture = planks
 			return s
 
 func getRecipie(item):

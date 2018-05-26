@@ -18,37 +18,40 @@ func _ready():
 
 	pass
 
+
+
 func _process(delta):
 #	print(ri(3))
 	
 	var pos = $Ground.world_to_map($Player.position)
 	var rect = $Ground.get_used_rect()
 #	print(rect.position)
-	if pos.y-1 < rect.position.y:
+
+	if pos.y-4 < rect.position.y:
 		print("on top of map")
 		for x in rect.size.x:
-			groundSetCell(rect.position.x + x, pos.y - 1)
+			groundSetCell(rect.position.x + x, pos.y - 4)
 		rect = $Ground.get_used_rect()
 		pos = $Ground.world_to_map($Player.position)
 	
-	if pos.y+2 > rect.position.y + rect.size.y:
+	if pos.y+5 > rect.position.y + rect.size.y:
 		print("on bottom of map")
 		for x in rect.size.x:
-			groundSetCell(rect.position.x+x,pos.y+1)
+			groundSetCell(rect.position.x+x,pos.y+4)
 		rect = $Ground.get_used_rect()
 		pos = $Ground.world_to_map($Player.position)
 	
-	if pos.x-1 < rect.position.x:
+	if pos.x-6 < rect.position.x:
 		print("on left of map")
 		for y in rect.size.y:
-			groundSetCell(pos.x - 1, rect.position.y + y)
+			groundSetCell(pos.x - 6, rect.position.y + y)
 		rect = $Ground.get_used_rect()
 		pos = $Ground.world_to_map($Player.position)
 	
-	if pos.x+2 > rect.position.x + rect.size.x:
+	if pos.x+7 > rect.position.x + rect.size.x:
 		print("on right of map")
 		for y in rect.size.y:
-			groundSetCell(pos.x+1, rect.position.y+y)
+			groundSetCell(pos.x+6, rect.position.y+y)
 		rect = $Ground.get_used_rect()
 		pos = $Ground.world_to_map($Player.position)
 		

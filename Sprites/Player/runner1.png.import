@@ -7,10 +7,10 @@ path="res://.import/runner1.png-3f52b9866429166272d68ee47a226d6c.stex"
 [deps]
 
 source_file="res://Sprites/Player/runner1.png"
-source_md5="778821a15a5891adfdacd75bd957ca65"
+source_md5="51ac94399301853c7809a5452b492afc"
 
 dest_files=[ "res://.import/runner1.png-3f52b9866429166272d68ee47a226d6c.stex" ]
-dest_md5="f9f199fe7e0a7982acf7e06c83ef49e3"
+dest_md5="715137c3f56cb55468b9a5bbfd0d625f"
 
 [params]
 
