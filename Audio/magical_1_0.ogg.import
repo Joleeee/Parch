@@ -10,9 +10,9 @@ source_file="res://Audio/magical_1_0.ogg"
 source_md5="498b2cdeedfe786d4cd4af6a9ec211c3"
 
 dest_files=[ "res://.import/magical_1_0.ogg-3de1b1cecd8a81b88a753843ad4b15a6.oggstr" ]
-dest_md5="86a6544021722c1d14991dfe8926e7fd"
+dest_md5="2c410bcef5e3ac439ac25eaa7e99ced6"
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
