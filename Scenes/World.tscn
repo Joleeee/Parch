@@ -81,7 +81,6 @@ __meta__ = {
 
 [node name="Player" type="KinematicBody2D" parent="." index="1"]
 
-editor/display_folded = true
 position = Vector2( -8, 8 )
 input_pickable = false
 collision_layer = 1
@@ -89,9 +88,6 @@ collision_mask = 1
 collision/safe_margin = 0.08
 script = ExtResource( 3 )
 _sections_unfolded = [ "Transform" ]
-__meta__ = {
-"_edit_group_": true
-}
 sticks = 0
 wood = 0
 coal = 0
@@ -101,14 +97,14 @@ planks = 0
 
 frames = ExtResource( 4 )
 animation = "Right"
-frame = 1
+frame = 3
 playing = true
 
 [node name="Tool" type="AnimatedSprite" parent="Player/AnimatedSprite" index="0"]
 
 frames = SubResource( 1 )
 animation = "Axe"
-frame = 1
+frame = 3
 playing = true
 
 [node name="Camera2D" type="Camera2D" parent="Player" index="1"]
@@ -202,6 +198,7 @@ bus = "Master"
 
 [node name="Area2D" type="Area2D" parent="Player" index="6"]
 
+editor/display_folded = true
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0

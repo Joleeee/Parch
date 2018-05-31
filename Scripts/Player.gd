@@ -196,7 +196,7 @@ func _physics_process(delta):
 				3:
 					typ = Global.ITEMS.PLANKS
 			chop(mov, typ)
-		else:
+		elif gro != 1:
 			move(mov)
 		
 		canWalk = false
@@ -234,7 +234,6 @@ func chop(mov, itemtype):
 func pickUpItems():
 	var areas = $Area2D.get_overlapping_areas()
 	for x in areas.size():
-#		print(areas[x].get_parent().name)
 		areas[x].get_parent().queue_free()
 		if hasChainsaw:
 			if planks == 0:
@@ -323,7 +322,6 @@ func fill(map, x0, y0, width, height):
 			map.set_cell(x0+x, y0+y, 0)
 
 func _loadFiles(path):
-#	print("started loading")
 	var files = []
 	var dir = Directory.new()
 	dir.open(path)
@@ -331,21 +329,11 @@ func _loadFiles(path):
 
 	while true:
 		var file = dir.get_next()
-#		print("file:"+file)
-#		print("doesfilestartwith.?"+str(file.begins_with(".")))
-#		print("doesfileendwith.import?"+str(file.ends_with(".import")))
-#		var a = file
 		if file == "":
 			break
 		if file.ends_with(".wav.import"):
-#			print("file is beeing accepted...")
 			var sound = load(path+file.replace(".import", ""))
-#			print("file is accepted")
-#			print(path+file)
 			files.append(sound)
-#			print(sound)
-#!file.begins_with(".") and !file.ends_with(".import"
-	
 	dir.list_dir_end()
 	
 	return files
